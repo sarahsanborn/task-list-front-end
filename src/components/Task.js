@@ -8,22 +8,13 @@ const Task = ({ id, title, isComplete, updateComplete }) => {
 
   // const buttonClass = complete ? 'tasks__item__toggle--completed' : '';
 
-
-  // THIS IS WHERE WE GOT LOST
-  const updateCompleteButtonClick = () => {
-    const updateCompleteButton = {
-      id: {id},
-      titleData: {title},
-      isComplete: (isComplete ? 'tasks__item__toggle--completed' : '')
-    };
-    updateComplete(id, updateCompleteButtonClick); // SHOULD THIS BE A FUNCTION OR A VARIABLE?!?!?!!
-  };
+  const updateCompleteButtonClick = isComplete ? 'tasks__item__toggle--completed' : '';
 
   return (
     <li className="tasks__item">
       <button
-        className={`tasks__item__toggle ${updateCompleteButtonClick}`} // SAME QUESTION HERE
-        onClick={() => updateComplete(!isComplete)}
+        className={`tasks__item__toggle ${updateCompleteButtonClick}`} 
+        onClick={() => updateComplete(id, isComplete)} 
       >
         {title}
       </button>
