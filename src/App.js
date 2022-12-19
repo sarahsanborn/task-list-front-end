@@ -17,7 +17,7 @@ const TASKS = [
 
 const App = () => {
   const initialCopy = TASKS.map((task) => {
-    return {...task};
+    return { ...task };
   });
 
   const [taskList, setTaskList] = useState(initialCopy);
@@ -30,7 +30,7 @@ const App = () => {
       } else {
         const newTask = {
           ...task,
-          isComplete: !isComplete
+          isComplete: !isComplete,
         };
         newTaskList.push(newTask);
       }
@@ -40,13 +40,31 @@ const App = () => {
     console.log(newTaskList);
   };
 
+  const deleteTask = (taskId) => {
+    const newTaskList = [];
+    for (const task of taskList) {
+      if (task.id !== taskId) {
+        newTaskList.push(task);
+      }
+    }
+    setTaskList(newTaskList);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>Ada&apos;s Task List</h1>
       </header>
       <main>
-        <div>{<TaskList tasks={taskList} updateComplete={updateComplete} />}</div>
+        <div>
+          {
+            <TaskList
+              tasks={taskList}
+              updateComplete={updateComplete}
+              deleteTask={deleteTask}
+            />
+          }
+        </div>
       </main>
     </div>
   );
