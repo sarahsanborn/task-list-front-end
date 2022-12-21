@@ -40,32 +40,54 @@ const App = () => {
       });
   }, []);
 
-  // Tasks not updating on website
   const updateComplete = (taskId, isComplete) => {
     const newTaskList = [];
-    axios
-      .patch(`${URL}/${taskId}/${isComplete}`)
-      .then((response) => {
-        for (const task of taskList) {
-          if (task.id !== taskId) {
-            newTaskList.push(task);
-          } else {
-            const newTask = {
-              ...task,
-              isComplete: !isComplete,
-            };
-            newTaskList.push(newTask);
+    if (isComplete === false) {
+      axios
+        .patch(`${URL}/${taskId}/mark_complete`)
+        .then((response) => {
+          for (const task of taskList) {
+            if (task.id !== taskId) {
+              newTaskList.push(task);
+            } else {
+              const newTask = {
+                ...task,
+                isComplete: !isComplete,
+              };
+              newTaskList.push(newTask);
+            }
           }
-        }
-        setTaskList(newTaskList);
-        console.log("We're in the updateComplete function");
-        console.log(newTaskList);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+          setTaskList(newTaskList);
+          console.log("We're in the updateComplete function");
+          console.log(newTaskList);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (isComplete === true) {
+      axios
+        .patch(`${URL}/${taskId}/mark_incomplete`)
+        .then((response) => {
+          for (const task of taskList) {
+            if (task.id !== taskId) {
+              newTaskList.push(task);
+            } else {
+              const newTask = {
+                ...task,
+                isComplete: !isComplete,
+              };
+              newTaskList.push(newTask);
+            }
+          }
+          setTaskList(newTaskList);
+          console.log("We're in the updateComplete function");
+          console.log(newTaskList);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
-
   const deleteTask = (taskId) => {
     axios
       .delete(`${URL}/${taskId}`)
