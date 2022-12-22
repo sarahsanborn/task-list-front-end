@@ -22,17 +22,20 @@ const App = () => {
   // });
 
   const [taskList, setTaskList] = useState([]);
-  const URL = 'http://127.0.0.1:5000/tasks';
+  const URL = 'https://task-list-api-c17.herokuapp.com/tasks';
   useEffect(() => {
     axios
       .get(URL)
       .then((response) => {
-        // console.log(response);
         const tasksApiResCopy = response.data.map((task) => {
           return {
-            ...task,
+            description: task.description,
+            id: task.id,
+            title: task.title,
+            isComplete: task.is_complete, // changing given is_complete from API to isComplete for JS (camel case) for 
           };
         });
+        console.log(tasksApiResCopy);
         setTaskList(tasksApiResCopy);
       })
       .catch((err) => {
@@ -40,26 +43,32 @@ const App = () => {
       });
   }, []);
 
+  const newTaskList = [];
+  const updateCompleteHelper = (taskId, isComplete) => {
+    console.log('in helper function');
+    for (const task of taskList) {
+      if (task.id !== taskId) {
+        newTaskList.push(task);
+      } else {
+        const newTask = {
+          ...task,
+          isComplete: !isComplete,
+        };
+        newTaskList.push(newTask);
+      }
+    }
+  };
+
   const updateComplete = (taskId, isComplete) => {
-    const newTaskList = [];
+    // console.log('We are in updateComplete function! Yay!');
     if (isComplete === false) {
+      // console.log('We are in the conditional statement');
       axios
         .patch(`${URL}/${taskId}/mark_complete`)
-        .then((response) => {
-          for (const task of taskList) {
-            if (task.id !== taskId) {
-              newTaskList.push(task);
-            } else {
-              const newTask = {
-                ...task,
-                isComplete: !isComplete,
-              };
-              newTaskList.push(newTask);
-            }
-          }
+        .then(() => {updateCompleteHelper(taskId, isComplete);
           setTaskList(newTaskList);
-          console.log("We're in the updateComplete function");
-          console.log(newTaskList);
+          // console.log('mark_complete');
+          // console.log(newTaskList);
         })
         .catch((err) => {
           console.log(err);
@@ -67,21 +76,10 @@ const App = () => {
     } else if (isComplete === true) {
       axios
         .patch(`${URL}/${taskId}/mark_incomplete`)
-        .then((response) => {
-          for (const task of taskList) {
-            if (task.id !== taskId) {
-              newTaskList.push(task);
-            } else {
-              const newTask = {
-                ...task,
-                isComplete: !isComplete,
-              };
-              newTaskList.push(newTask);
-            }
-          }
+        .then(() => {updateCompleteHelper(taskId, isComplete);
           setTaskList(newTaskList);
-          console.log("We're in the updateComplete function");
-          console.log(newTaskList);
+          // console.log('mark INcomplete');
+          // console.log(newTaskList);
         })
         .catch((err) => {
           console.log(err);
