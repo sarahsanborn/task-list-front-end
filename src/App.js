@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import TaskList from './components/TaskList.js';
 import './App.css';
 import axios from 'axios';
+import NewTaskForm from './components/NewTaskForm.js';
 
 // const TASKS = [
 //   {
@@ -23,7 +24,8 @@ const App = () => {
 
   const [taskList, setTaskList] = useState([]);
   const URL = 'https://task-list-api-c17.herokuapp.com/tasks';
-  useEffect(() => {
+
+  const getAllTasks = () => {
     axios
       .get(URL)
       .then((response) => {
@@ -41,7 +43,9 @@ const App = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  };
+
+  useEffect(getAllTasks, []);
 
   const newTaskList = [];
   const updateCompleteHelper = (taskId, isComplete) => {
@@ -103,9 +107,26 @@ const App = () => {
       });
   };
 
+  const addTask = (newTaskInfo) => {
+    axios.post(URL, newTaskInfo)
+    .then((response)=>{
+      getAllTasks();
+      const newTasks = [...taskList];
+      const newTaskJSON={
+        ...newTaskInfo,
+        'id': response.data.id
+      };
+      newTasks.push(newTaskJSON);
+      setTaskList(newTasks); 
+    })
+    .catch((error)=>{
+      console.log(error);
+    });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className='App'>
+      <header className='App-header'>
         <h1>Ada&apos;s Task List</h1>
       </header>
       <main>
@@ -117,6 +138,7 @@ const App = () => {
               deleteTask={deleteTask}
             />
           }
+          <NewTaskForm addTask={addTask}></NewTaskForm>
         </div>
       </main>
     </div>

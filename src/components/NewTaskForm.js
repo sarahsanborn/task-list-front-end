@@ -1,11 +1,11 @@
-import PropTypes from "prop-types";
-import { useState } from "react";
-import React from "react";
+import PropTypes from 'prop-types';
+import { useState } from 'react';
+import React from 'react';
 
 const INITIAL_FORM_DATA = {
-  id: 420,
-  title: 'Heyo!',
-  description: 'New form',
+  id: 1000,
+  title: 'Enter new task title here',
+  description: 'Enter task description here',
   isComplete: false,
 };
 
@@ -17,6 +17,7 @@ const NewTaskForm = ({addTask}) => {
     const newFormData = {
       ...formData,
       [e.target.name]: datafield,
+
     };
     setFormData(newFormData);
   };
@@ -28,25 +29,25 @@ const NewTaskForm = ({addTask}) => {
 
   return (
     <form onSubmit={handleNewTaskSubmit}>
-      <label htmlFor="title">Task Title</label>
+      <label htmlFor='title'>Task Title</label>
       <input
-        type="text"
-        id="title"
-        name="title"
+        type='text'
+        id='title'
+        name='title'
         value={formData.title}
         onChange={handleChange}
       />
 
-      <label htmlFor="description">Task Description</label>
+      <label htmlFor='description'>Task Description</label>
       <input
-        type="text"
-        id="description"
-        name="description"
+        type='text'
+        id='description'
+        name='description'
         value={formData.description}
         onChange={handleChange}
       />
 
-      <input type="submit" value="Add task"/>
+      <input type='submit' value='Add task'/>
     </form>
   );
 };
