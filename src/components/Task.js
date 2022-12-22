@@ -10,12 +10,13 @@ const Task = ({ id, title, isComplete, updateComplete, deleteTask }) => {
   const updateCompleteButtonClick = isComplete
     ? 'tasks__item__toggle--completed'
     : '';
+    // The above switches the class back and forth (called a ternary function)
 
   return (
     <li className="tasks__item">
       <button
         className={`tasks__item__toggle ${updateCompleteButtonClick}`}
-        onClick={() => updateComplete(id, isComplete)}
+        onClick={() => updateComplete(id, isComplete)} // We made sure to pass these in, as specified in App.js
       >
         {title}
       </button>

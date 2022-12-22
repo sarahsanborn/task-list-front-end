@@ -34,7 +34,7 @@ const App = () => {
             description: task.description,
             id: task.id,
             title: task.title,
-            isComplete: task.is_complete, // changing given is_complete from API to isComplete for JS (camel case) for 
+            isComplete: task.is_complete, // The API gives is_complete (snake case) as a key, but we need to change it to isComplete (camel case) for JS to understand it 
           };
         });
         console.log(tasksApiResCopy);
@@ -55,8 +55,8 @@ const App = () => {
         newTaskList.push(task);
       } else {
         const newTask = {
-          ...task,
-          isComplete: !isComplete,
+          ...task, // This says to make a copy of each task 
+          isComplete: !isComplete, // except for the isComplete key, which should switch the value from false to true and vice versa
         };
         newTaskList.push(newTask);
       }
@@ -69,7 +69,7 @@ const App = () => {
       // console.log('We are in the conditional statement');
       axios
         .patch(`${URL}/${taskId}/mark_complete`)
-        .then(() => {updateCompleteHelper(taskId, isComplete);
+        .then(() => {updateCompleteHelper(taskId, isComplete); // Made a helper function to have DRY code
           setTaskList(newTaskList);
           // console.log('mark_complete');
           // console.log(newTaskList);
